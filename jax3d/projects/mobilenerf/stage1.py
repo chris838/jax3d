@@ -13,9 +13,20 @@
 # limitations under the License.
 
 
-scene_type = "synthetic"
-object_name = "chair"
-scene_dir = "datasets/nerf_synthetic/"+object_name
+import yaml
+
+with open("configs/config.yaml", 'r') as f:
+	config = yaml.load(f, Loader=yaml.FullLoader)
+
+	scene_type = config['scene_type']
+	object_name = config['object_name']
+	scene_dir = config['scene_dir']
+	weights_dir = config['weights_dir']
+	samples_dir = config['samples_dir']
+
+	training_iters = config['stage_1']['training_iters']
+	train_iters_cont = config['stage_1']['train_iters_cont']
+
 
 # synthetic
 # chair drums ficus hotdog lego materials mic ship
@@ -55,8 +66,6 @@ print(jax.local_devices())
 if len(jax.local_devices())!=8:
   print("WARNING: need 8 v100 GPUs")
 
-weights_dir = "weights"
-samples_dir = "samples"
 if not os.path.exists(weights_dir):
   os.makedirs(weights_dir)
 if not os.path.exists(samples_dir):
@@ -1487,11 +1496,6 @@ iters_test = []
 t_total = 0.0
 t_last = 0.0
 i_last = step_init
-
-training_iters = 200000
-train_iters_cont = 300000
-if scene_type=="real360":
-  training_iters = 300000
 
 print("Training")
 for i in tqdm(range(step_init, training_iters + 1)):

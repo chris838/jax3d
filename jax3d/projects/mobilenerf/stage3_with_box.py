@@ -13,9 +13,16 @@
 # limitations under the License.
 
 
-scene_type = "real360"
-object_name = "gardenvase"
-scene_dir = "datasets/nerf_real_360/"+object_name
+import yaml
+
+with open("configs/config.yaml", 'r') as f:
+	config = yaml.load(f, Loader=yaml.FullLoader)
+
+	scene_type = config['scene_type']
+	object_name = config['object_name']
+	scene_dir = config['scene_dir']
+	weights_dir = config['weights_dir']
+	samples_dir = config['samples_dir']
 
 # synthetic
 # chair drums ficus hotdog lego materials mic ship
@@ -55,8 +62,6 @@ print(jax.local_devices())
 if len(jax.local_devices())!=8:
   print("WARNING: need 8 v100 GPUs")
 
-weights_dir = "weights"
-samples_dir = "samples"
 if not os.path.exists(weights_dir):
   os.makedirs(weights_dir)
 if not os.path.exists(samples_dir):

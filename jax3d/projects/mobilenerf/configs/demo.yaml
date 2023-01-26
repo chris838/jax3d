@@ -1,0 +1,13 @@
+scene_type : "synthetic"
+object_name : "chair"
+scene_dir : "datasets/nerf_synthetic/chair"
+weights_dir : "weights"
+samples_dir : "samples"
+
+stage_1:
+  training_iters : 200000
+  train_iters_cont : 300000
+
+stage_2:
+  training_iters_a : 400000
+  training_iters_b : 100000
