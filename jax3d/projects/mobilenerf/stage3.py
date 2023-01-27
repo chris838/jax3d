@@ -18,11 +18,11 @@ import yaml
 with open("configs/config.yaml", 'r') as f:
 	config = yaml.load(f, Loader=yaml.FullLoader)
 
-	scene_type = config.scene_type
-	object_name = config.object_name
-	scene_dir = config.scene_dir
-	weights_dir = config.weights_dir
-	samples_dir = config.samples_dir
+	scene_type = config['scene_type']
+	object_name = config['object_name']
+	scene_dir = config['scene_dir']
+	weights_dir = config['weights_dir']
+	samples_dir = config['samples_dir']
 
 # synthetic
 # chair drums ficus hotdog lego materials mic ship
@@ -2379,7 +2379,7 @@ def copy_patch_to_png(out_img,out_cell_num,new_img,new_cell_num):
 
 #write mesh
 
-obj_save_dir = "obj"
+obj_save_dir = f"{weights_dir}/obj"
 if not os.path.exists(obj_save_dir):
   os.makedirs(obj_save_dir)
 

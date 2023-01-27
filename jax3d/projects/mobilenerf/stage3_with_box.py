@@ -2510,7 +2510,7 @@ def get_box_v_from_uv(xyid,layerid,py,px):
 
 #write mesh
 
-obj_save_dir = "obj"
+obj_save_dir = f"{weights_dir}/obj"
 if not os.path.exists(obj_save_dir):
   os.makedirs(obj_save_dir)
 
