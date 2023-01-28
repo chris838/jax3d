@@ -19,6 +19,7 @@ with open("configs/config.yaml", 'r') as f:
 	config = yaml.load(f, Loader=yaml.FullLoader)
 
 	data_loader = config['data_loader']
+	run_test_set_evaluation = config['run_test_set_evaluation']
 	scene_type = config['scene_type']
 	object_name = config['object_name']
 	scene_dir = config['scene_dir']
@@ -2010,24 +2011,26 @@ for i in tqdm(range(step_init, training_iters_b + 1)):
 #%%
 gc.collect()
 
-render_poses = data['test']['c2w'][:len(data['test']['images'])]
-frames = []
-framemasks = []
-print("Testing")
-for p in tqdm(render_poses):
-  out = render_loop(camera_ray_batch(p, hwf), vars, test_batch_size)
-  frames.append(out[0])
-  framemasks.append(out[1])
-psnrs_test = [-10 * np.log10(np.mean(np.square(rgb - gt))) for (rgb, gt) in zip(frames, data['test']['images'])]
-print("Test set average PSNR: %f" % np.array(psnrs_test).mean())
+if run_test_set_evaluation:
+	
+	render_poses = data['test']['c2w'][:len(data['test']['images'])]
+	frames = []
+	framemasks = []
+	print("Testing")
+	for p in tqdm(render_poses):
+		out = render_loop(camera_ray_batch(p, hwf), vars, test_batch_size)
+		frames.append(out[0])
+		framemasks.append(out[1])
+	psnrs_test = [-10 * np.log10(np.mean(np.square(rgb - gt))) for (rgb, gt) in zip(frames, data['test']['images'])]
+	print("Test set average PSNR: %f" % np.array(psnrs_test).mean())
 
-#%%
-ssim_values = []
-for i in range(len(data['test']['images'])):
-  ssim = ssim_fn(frames[i], data['test']['images'][i])
-  ssim_values.append(float(ssim))
+	#%%
+	ssim_values = []
+	for i in range(len(data['test']['images'])):
+		ssim = ssim_fn(frames[i], data['test']['images'][i])
+		ssim_values.append(float(ssim))
 
-print("Test set average SSIM: %f" % np.array(ssim_values).mean())
+	print("Test set average SSIM: %f" % np.array(ssim_values).mean())
 #%%
 #%% --------------------------------------------------------------------------------
 # ## Save weights
