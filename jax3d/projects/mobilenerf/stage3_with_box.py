@@ -99,7 +99,7 @@ if data_loader=="blender":
       frame = meta["frames"][i]
       cams.append(np.array(frame["transform_matrix"], dtype=np.float32))
 
-      fname = os.path.join(data_dir, frame["file_path"] + ".png")
+      fname = os.path.join(data_dir, frame["file_path"])
       paths.append(fname)
 
     def image_read_fn(fname):
