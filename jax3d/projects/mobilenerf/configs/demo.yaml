@@ -1,3 +1,4 @@
+data_loader : "blender"
 scene_type : "synthetic"
 object_name : "chair"
 scene_dir : "datasets/nerf_synthetic/chair"

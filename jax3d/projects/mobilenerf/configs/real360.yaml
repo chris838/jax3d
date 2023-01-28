@@ -1,3 +1,4 @@
+data_loader : "llff"
 scene_type : "real360"
 object_name : "gardenvase"
 scene_dir : "datasets/nerf_real_360/gardenvase"

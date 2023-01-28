@@ -18,6 +18,7 @@ import yaml
 with open("configs/config.yaml", 'r') as f:
 	config = yaml.load(f, Loader=yaml.FullLoader)
 
+	data_loader = config['data_loader']
 	scene_type = config['scene_type']
 	object_name = config['object_name']
 	scene_dir = config['scene_dir']
@@ -85,7 +86,7 @@ elif scene_type=="real360":
 #https://github.com/google-research/google-research/blob/master/snerg/nerf/datasets.py
 
 
-if scene_type=="synthetic":
+if data_loader=="blender":
 
   def load_blender(data_dir, split):
     with open(
@@ -142,7 +143,10 @@ if scene_type=="synthetic":
     plt.axis('equal')
     plt.savefig(samples_dir+"/training_camera"+str(i)+".png")
 
-elif scene_type=="forwardfacing" or scene_type=="real360":
+  if scene_type != "synthetic":
+    bg_color = np.mean(images)
+
+elif data_loader == "llff":
 
   import numpy as np #temporarily use numpy as np, then switch back to jax.numpy
   import jax.numpy as jnp

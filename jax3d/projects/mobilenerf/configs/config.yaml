@@ -1,3 +1,4 @@
+data_loader: blender
 object_name: chair
 samples_dir: samples
 scene_dir: datasets/nerf_synthetic/chair
