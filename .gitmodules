@@ -1,0 +1,3 @@
+[submodule "jax3d/projects/mobilenerf/nerfstudio"]
+	path = jax3d/projects/mobilenerf/nerfstudio
+	url = git@github.com:nerfstudio-project/nerfstudio.git
