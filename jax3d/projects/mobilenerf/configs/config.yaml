@@ -10,3 +10,4 @@ stage_2:
   training_iters_a: 400000
   training_iters_b: 100000
 weights_dir: weights
+run_test_set_evaluation: False
