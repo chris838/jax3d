@@ -161,7 +161,6 @@ def load_LLFF(data_dir, split, scene_type, factor=4, llffhold=8):
     poses = np.moveaxis(poses, -1, 0).astype(np.float32)
     images = np.moveaxis(images, -1, 0)
     bds = np.moveaxis(bds, -1, 0).astype(np.float32)
-    print(f"bds: {bds}")
 
     if scene_type == "real360":
         # Rotate/scale poses to align ground with xy plane and fit to unit cube.
@@ -173,7 +172,6 @@ def load_LLFF(data_dir, split, scene_type, factor=4, llffhold=8):
         bds *= scale
         # Recenter poses
         poses = _recenter_poses(poses)
-        print(f"bds: {bds}")
 
     # Select the split.
     i_test = np.arange(images.shape[0])[::llffhold]
