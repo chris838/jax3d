@@ -192,7 +192,7 @@ def load_LLFF(data_dir, split, scene_type, factor=4, llffhold=8):
 
     return {'images': jnp.array(images), 'c2w': jnp.array(camtoworlds), 'hwf': jnp.array(hwf), 'poses': poses}
 
-def load_nerfstudio(data_dir, split):
+def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
     with open(
             os.path.join(data_dir, "transforms.json"), "r") as fp:
         meta = json.load(fp)
@@ -232,9 +232,20 @@ def load_nerfstudio(data_dir, split):
     # Recenter poses, so the average pose sits at the origin
     poses = _recenter_poses(poses)
 
+    # Select the train/eval split.
+    i_test = np.arange(images.shape[0])[::num_frames_for_training]
+    i_train = np.array(
+        [i for i in np.arange(int(images.shape[0])) if i not in i_test])
+    if split == "train":
+        indices = i_train
+    else:
+        indices = i_test
+    images = images[indices]
+    poses = poses[indices]
+
     # Looks like the transform matrix is in homogeneous coords, but this doesn't quite match the llff data?
-    # c2w = poses[:, 0:3, :]
-    c2w = poses
+    # Following what the LLFF loader does and cutting the extra dim, although I don't think it matters
+    c2w = poses[:, 0:3, :]
 
     # Convert to jax before returning
     return {'images': jnp.array(images), 'c2w': jnp.array(c2w), 'hwf': jnp.array(hwf), 'poses': poses}
