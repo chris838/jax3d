@@ -10,8 +10,6 @@ from multiprocessing.pool import ThreadPool
 import jax.numpy as jnp
 import numpy as np
 
-import nerfstudio_data_loader
-
 
 def blender(scene_dir, scene_type, white_bkgd, samples_dir):
 
