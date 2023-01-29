@@ -121,7 +121,7 @@ def load_blender(data_dir, split):
     poses = jnp.stack(cams, axis=0)
     return {'images': images, 'c2w': poses, 'hwf': hwf}
 
-def load_LLFF(data_dir, split, scene_type, factor=4, llffhold=8):
+def load_LLFF(data_dir, scene_type, split, factor=4, llffhold=8):
     # Load images.
     imgdir_suffix = ""
     if factor > 0:
