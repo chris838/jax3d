@@ -210,7 +210,7 @@ def load_nerfstudio(data_dir, split):
         assert "fl_y" in frame, "fy not specified in frame"
         fy.append(float(frame["fl_y"]))
 
-        cams.append(jnp.array(frame["transform_matrix"], dtype=jnp.float32))
+        cams.append(np.array(frame["transform_matrix"], dtype=np.float32))
 
         fname = os.path.join(data_dir, frame["file_path"])
         paths.append(fname)
@@ -220,19 +220,23 @@ def load_nerfstudio(data_dir, split):
         pool.close()
         pool.join()
 
-    images = jnp.stack(images, axis=0)
+    images = np.stack(images, axis=0)
 
     h, w = images.shape[1:3]
     # Get focal length from last pose, we assume it's roughly the same in each frame and that fx ~= fy
     focal = fx[-1]
 
-    hwf = jnp.array([h, w, focal], dtype=jnp.float32)
-    poses = jnp.stack(cams, axis=0)
+    hwf = np.array([h, w, focal], dtype=np.float32)
+    poses = np.stack(cams, axis=0)
+
+    # Recenter poses, so the average pose sits at the origin
+    poses = _recenter_poses(poses)
 
     # Not sure what this extranous dimension is, but we drop it to match the llff data
     c2w = poses[:, 0:3, :]
 
-    return {'images': images, 'c2w': c2w, 'hwf': hwf, 'poses': poses}
+    # Convert to jax before returning
+    return {'images': jnp.array(images), 'c2w': jnp.array(c2w), 'hwf': jnp.array(hwf), 'poses': poses}
 
 
 
