@@ -232,8 +232,9 @@ def load_nerfstudio(data_dir, split):
     # Recenter poses, so the average pose sits at the origin
     poses = _recenter_poses(poses)
 
-    # Not sure what this extranous dimension is, but we drop it to match the llff data
-    c2w = poses[:, 0:3, :]
+    # Looks like the transform matrix is in homogeneous coords, but this doesn't quite match the llff data?
+    # c2w = poses[:, 0:3, :]
+    c2w = poses
 
     # Convert to jax before returning
     return {'images': jnp.array(images), 'c2w': jnp.array(c2w), 'hwf': jnp.array(hwf), 'poses': poses}
