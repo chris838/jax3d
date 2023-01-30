@@ -94,6 +94,7 @@ if data_loader == "blender":
 elif data_loader == "llff":
 	data, bg_color = data_loaders.llff(scene_dir, scene_type, white_bkgd, samples_dir)
 
+images, poses, hwf = data['train']['images'], data['train']['c2w'], data['train']['hwf']
 
 #%% --------------------------------------------------------------------------------
 # ## Helper functions
