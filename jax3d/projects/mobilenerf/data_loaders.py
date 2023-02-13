@@ -228,7 +228,7 @@ def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
     images = np.stack(images, axis=0)
 
     h, w = images.shape[1:3]
-    
+
     # Get focal length from metadata, or first pose
     focal = fx[0]
 
@@ -239,9 +239,10 @@ def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
     poses = _recenter_poses(poses)
 
     # Select the train/eval split.
-    i_test = np.arange(images.shape[0])[::num_frames_for_training]
+    i_all = np.arange(int(images.shape[0]))
+    i_test = np.random.choice(i_all, num_frames_for_training)
     i_train = np.array(
-        [i for i in np.arange(int(images.shape[0])) if i not in i_test])
+        [i for i in i_all if i not in i_test])
     if split == "train":
         indices = i_train
     else:
