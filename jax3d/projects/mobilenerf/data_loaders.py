@@ -201,14 +201,19 @@ def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
     fy = []
     cams = []
     paths = []
+
+    if "fl_x" in meta:
+      fx.append(float(meta["fl_x"]))
+    if "fl_y" in meta:
+      fy.append(float(meta["fl_y"]))
+
     for i in range(len(meta["frames"])):
         frame = meta["frames"][i]
 
-        assert "fl_x" in frame, "fx not specified in frame"
-        fx.append(float(frame["fl_x"]))
-
-        assert "fl_y" in frame, "fy not specified in frame"
-        fy.append(float(frame["fl_y"]))
+        if "fl_x" in frame:
+          fx.append(float(frame["fl_x"]))
+        if "fl_y" in frame:
+          fy.append(float(frame["fl_y"]))
 
         cams.append(np.array(frame["transform_matrix"], dtype=np.float32))
 
@@ -223,8 +228,9 @@ def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
     images = np.stack(images, axis=0)
 
     h, w = images.shape[1:3]
-    # Get focal length from last pose, we assume it's roughly the same in each frame and that fx ~= fy
-    focal = fx[-1]
+    
+    # Get focal length from metadata, or first pose
+    focal = fx[0]
 
     hwf = np.array([h, w, focal], dtype=np.float32)
     poses = np.stack(cams, axis=0)
