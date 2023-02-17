@@ -3,3 +3,5 @@ samples
 
 .DS_Store
 *_phone
+
+.ipynb_checkpoints
