@@ -1,4 +1,4 @@
-data_loader: blender
+data_loader: nerfstudio
 object_name: chair
 samples_dir: samples
 scene_dir: datasets/nerf_synthetic/chair
@@ -11,3 +11,4 @@ stage_2:
   training_iters_b: 100000
 weights_dir: weights
 run_test_set_evaluation: False
+point_grid_size: 128

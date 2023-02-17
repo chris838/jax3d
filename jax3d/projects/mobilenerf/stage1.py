@@ -26,6 +26,8 @@ with open("configs/config.yaml", 'r') as f:
 	weights_dir = config['weights_dir']
 	samples_dir = config['samples_dir']
 
+	point_grid_size = config['point_grid_size']
+
 	training_iters = config['stage_1']['training_iters']
 	train_iters_cont = config['stage_1']['train_iters_cont']
 
@@ -214,7 +216,6 @@ if scene_type=="synthetic":
     scene_grid_scale = 1.5
   grid_min = np.array([-1, -1, -1]) * scene_grid_scale
   grid_max = np.array([ 1,  1,  1]) * scene_grid_scale
-  point_grid_size = 128
 
   def get_taper_coord(p):
     return p
@@ -228,7 +229,6 @@ elif scene_type=="forwardfacing":
   scene_grid_scale = 0.7
   grid_min = np.array([-scene_grid_scale, -scene_grid_scale,  0])
   grid_max = np.array([ scene_grid_scale,  scene_grid_scale,  1])
-  point_grid_size = 128
 
   def get_taper_coord(p):
     pz = np.maximum(-p[..., 2:3],1e-10)
@@ -251,7 +251,6 @@ elif scene_type=="real360":
     scene_grid_zmax = 9.0
   grid_min = np.array([-1, -1, -1])
   grid_max = np.array([ 1,  1,  1])
-  point_grid_size = 128
 
   def get_taper_coord(p):
     return p

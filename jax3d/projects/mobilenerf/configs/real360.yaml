@@ -5,6 +5,8 @@ scene_dir : "datasets/nerf_real_360/gardenvase"
 weights_dir : "weights"
 samples_dir : "samples"
 
+point_grid_size: 128
+
 stage_1:
   training_iters : 300000
   train_iters_cont : 300000
