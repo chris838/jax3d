@@ -58,10 +58,10 @@ def llff(scene_dir, scene_type, white_bkgd, samples_dir):
 
     return data, bg_color
 
-def nerfstudio(scene_dir, scene_type, white_bkgd, samples_dir):
+def nerfstudio(scene_dir, samples_dir, num_test_frames=3, train_on_test_frames=False):
 
-    data = {'train': load_nerfstudio(scene_dir, 'train'),
-            'test': load_nerfstudio(scene_dir, 'test')}
+    data = {'train': load_nerfstudio(scene_dir, 'train', num_test_frames, train_on_test_frames),
+            'test': load_nerfstudio(scene_dir, 'test', num_test_frames, train_on_test_frames)}
 
     splits = ['train', 'test']
     for s in splits:
@@ -192,7 +192,7 @@ def load_LLFF(data_dir, scene_type, split, factor=4, llffhold=8):
 
     return {'images': jnp.array(images), 'c2w': jnp.array(camtoworlds), 'hwf': jnp.array(hwf), 'poses': poses}
 
-def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
+def load_nerfstudio(data_dir, split, num_test_frames, train_on_test_frames):
     with open(
             os.path.join(data_dir, "transforms.json"), "r") as fp:
         meta = json.load(fp)
@@ -240,9 +240,12 @@ def load_nerfstudio(data_dir, split, num_frames_for_training = 8):
 
     # Select the train/eval split.
     i_all = np.arange(int(images.shape[0]))
-    i_test = np.random.choice(i_all, num_frames_for_training)
-    i_train = np.array(
-        [i for i in i_all if i not in i_test])
+    i_test = np.random.choice(i_all, num_test_frames)
+    if train_on_test_frames:
+      i_train = i_all
+    else:
+      i_train = np.array([i for i in i_all if i not in i_test])
+
     if split == "train":
         indices = i_train
     else:

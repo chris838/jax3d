@@ -6,6 +6,8 @@ weights_dir : "weights"
 samples_dir : "samples"
 
 point_grid_size: 128
+num_test_frames: 3
+train_on_test_frames: False
 
 stage_1:
   training_iters : 300000

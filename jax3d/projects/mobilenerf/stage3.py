@@ -25,7 +25,9 @@ with open("configs/config.yaml", 'r') as f:
 	scene_dir = config['scene_dir']
 	weights_dir = config['weights_dir']
 	samples_dir = config['samples_dir']
-
+	
+	num_test_frames = config['num_test_frames']
+	train_on_test_frames = config['train_on_test_frames']
 	point_grid_size = config['point_grid_size']
 
 # synthetic
@@ -97,7 +99,7 @@ elif data_loader == "llff":
 	data, bg_color = data_loaders.llff(scene_dir, scene_type, white_bkgd, samples_dir)
 
 elif data_loader == "nerfstudio":
-	data, bg_color = data_loaders.nerfstudio(scene_dir, scene_type, white_bkgd, samples_dir)
+	data, bg_color = data_loaders.nerfstudio(scene_dir, samples_dir, num_test_frames, train_on_test_frames)
 
 images, poses, hwf = data['train']['images'], data['train']['c2w'], data['train']['hwf']
 

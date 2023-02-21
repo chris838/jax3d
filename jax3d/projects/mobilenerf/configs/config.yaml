@@ -12,3 +12,5 @@ stage_2:
 weights_dir: weights
 run_test_set_evaluation: False
 point_grid_size: 128
+num_test_frames: 3
+train_on_test_frames: False
