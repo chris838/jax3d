@@ -13,8 +13,8 @@ import numpy as np
 
 def blender(scene_dir, scene_type, white_bkgd, samples_dir):
 
-    data = {'train': load_blender(scene_dir, 'train'),
-            'test': load_blender(scene_dir, 'test')}
+    data = {'train': load_blender(scene_dir, 'train', white_bkgd),
+            'test': load_blender(scene_dir, 'test', white_bkgd)}
 
     splits = ['train', 'test']
     for s in splits:
@@ -87,7 +87,7 @@ def nerfstudio(scene_dir, samples_dir, num_test_frames=3, train_on_test_frames=F
 
 
 
-def load_blender(data_dir, split):
+def load_blender(data_dir, split, white_bkgd):
     with open(
             os.path.join(data_dir, "transforms_{}.json".format(split)), "r") as fp:
         meta = json.load(fp)
